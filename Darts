@@ -1,0 +1,100 @@
+using System;
+namespace sdfghjk
+{
+class Program
+{
+static void Main(string[] args)
+{
+int conMaxScore = 10, conStep = 1, conMaxValue = 15, Speed = 20, points;
+Console.WriteLine("Изменить базовые настройки? y");
+if (Console.ReadLine() == "y")
+{
+ChangeOpt(ref conMaxScore, ref conStep, ref conMaxValue, ref Speed);
+}
+int score = 0, n=1;
+do
+{
+double x, y;
+Console.WriteLine("Рассчет координаты X");
+x = RandomKoor(ref conMaxValue, ref Speed);
+Console.ReadKey();
+Console.WriteLine();
+Console.WriteLine("Рассчет координаты Y");
+y = RandomKoor(ref conMaxValue, ref Speed);
+Console.WriteLine();
+Console.WriteLine("X = " + x);
+Console.WriteLine("Y = " + y);
+Console.WriteLine();
+score += Circ(ref x, ref y, ref conMaxScore, ref conStep);
+points = Circ(ref x, ref y, ref conMaxScore, ref conStep);
+Console.ForegroundColor = ConsoleColor.Red;
+Console.WriteLine("****************************************************************************");
+Console.WriteLine("Выстрел: " + n + " | " + "Кол-во очков за попадание: " + Circ(ref x, ref y, ref conMaxScore, ref conStep) + " | " + "Общее кол-во очков: " + score);
+Console.WriteLine("****************************************************************************");
+
+Console.ForegroundColor = ConsoleColor.Black;
+n += 1;
+Difficulty(ref points, ref Speed);
+Console.WriteLine(Speed);
+Console.WriteLine("Прекратить? y");
+Console.ReadKey();
+} while (Console.ReadLine() != "y");
+}
+public static double RandomKoor(ref int conMaxValue, ref int Speed)
+{
+double x, y = 0;
+Random random = new Random();
+while (!Console.KeyAvailable)
+{ if (y < conMaxValue)
+{
+x = random.NextDouble();
+y += x;
+Console.Write(y);
+System.Threading.Thread.Sleep(Speed);
+Console.CursorLeft = 0;
+} else {
+y = -conMaxValue;
+}
+}
+return y;
+}
+public static int Circ(ref double x, ref double y, ref int conMaxScore, ref int conStep)
+{
+int con = -conStep, score ;
+double shotL, sum;
+sum = Math.Pow(x, 2) + Math.Pow(y, 2);
+shotL = Math.Sqrt(sum);
+if (shotL > conMaxScore) 
+{
+con = conMaxScore;
+} else while (con < shotL)
+{
+con += conStep;
+}
+score = conMaxScore - con;
+return score;
+}
+public static void ChangeOpt(ref int conMaxScore, ref int conStep, ref int conMaxValue, ref int Speed)
+{
+Console.Write("Введите значение кол-ва кругов: ");
+conMaxScore = Convert.ToInt32(Console.ReadLine());
+Console.Write("Введите значение шага между кругами: ");
+conStep = Convert.ToInt32(Console.ReadLine());
+Console.Write("Введите значение правой границы мишени: ");
+conMaxValue = Convert.ToInt32(Console.ReadLine());
+Console.Write("Введите значение задержки: ");
+Speed = Convert.ToInt32(Console.ReadLine());
+}
+public static void Difficulty(ref int score, ref int Speed)
+ 
+{
+if (score > 7) 
+{
+Speed -= 5;
+} else if (Speed <= 20)
+{
+Console.Write("Изумительная реакция) ");
+}
+}
+}
+}
